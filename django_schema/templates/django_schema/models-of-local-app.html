@@ -1,0 +1,109 @@
+{% extends 'django_schema/base_templates/_base_master.html' %}
+
+{% block master_content %}
+    <div class="container d-none ">
+
+        <form action="">
+            {{ test_model_form.as_ul }}
+            <input type="submit" value="submit">
+        </form>
+    </div>
+    <div class="container" style="min-height: 600px">
+        <span class="small strong text-info">
+                      {% if style %}
+                          Schem Style {{ style }}
+                      {% else %}
+                          Default Schema Style
+                      {% endif %}
+                  </span>
+        {% for model,fields in forms.items %}
+            <div class="card d-none" id="{{ model }}">
+                <div class="card-header">
+                    Generate Form for {{ model }} Object. Please Select the necessary Fields
+                </div>
+                <div class="card-body px-0 py-0" id="{{ model }}">
+                    <form action="." method="post" class="bg-light">
+                        {% csrf_token %}
+                        {% for field in fields %}
+                            <div class="form-group form-check mx-5">
+                                <input class="form-check-input" type="checkbox"
+                                       name={{ field.attname }} value="{{ field.attname }}"
+                                       id="{{ field.attname }}">
+                                <label class="form-check-label" for="{{ field.attname }}">
+                                    {% if not field.null %}
+                                        <span class="text-danger">*</span>
+                                    {% endif %}
+                                    <span class="strong">{{ field.name }}</span>
+                                    <span class="text-info">{{ field.get_internal_type }}</span>
+                                    {% if field.auto_created %}
+                                        <span class="text-warning">Auto Created</span> {% endif %}
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary mx-5">Submit</button>
+                    </form>
+                </div>
+            </div>
+
+        {% endfor %}
+
+
+        {% if forms %}
+
+            <div class="accordion" id="accordionExample">
+
+                {% for model,fields in forms.items %}
+                    <div class="card mb-2">
+                        <div class="card-header" id="headingOne{{ forloop.counter0 }}">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#{{ model }}"
+                                        aria-expanded="true" aria-controls="{{ model }}">
+                                    {{ model }}
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="{{ model }}" class="collapse show"
+                             aria-labelledby="headingOne{{ forloop.counter0 }}"
+                             data-parent="#accordionExample">
+                            <div class="card-body px-0 py-0" id="{{ model }}">
+                                <form action="." method="post" class="bg-light">
+                                    <input type="hidden" name="model-name" value="{{ model }}">
+                                    {% csrf_token %}
+                                    {% for field in fields %}
+                                        <div class="form-group form-check mx-5">
+                                            <input class="form-check-input" type="checkbox"
+                                                   name={{ field.attname }} value="{{ field.attname }}"
+                                                   id="{{ field.attname }}"
+                                                   {% if field.is_in_default_model_form_fields %}checked{% endif %}>
+                                            <label class="form-check-label" for="{{ field.attname }}">
+                                                {% if not field.null %}
+                                                    <span class="text-danger">*</span>
+                                                {% endif %}
+                                                <span class="strong">{{ field.name }}</span>
+                                                <span class="text-info">{{ field.get_internal_type }}</span>
+                                                {% if field.auto_created %}
+                                                    <span class="text-warning">Auto Created</span> {% endif %}
+                                                {% if field.is_in_default_model_form_fields %}
+                                                    <span class="small"> (ff) </span>
+                                                {% endif %}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                    <button type="submit" class="btn btn-primary mx-5 py-2 my-2">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-danger"><strong>{{ app_name }} </strong> does not have any <strong>Models </strong>to
+                generate Form Schema.
+            </div>
+
+
+        {% endif %}
+    </div>
+{% endblock %}

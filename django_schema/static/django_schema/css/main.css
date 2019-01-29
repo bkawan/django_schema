@@ -1,0 +1,125 @@
+/* Social Icon Color*/
+.facebook-color {
+    color: #3b5999;
+}
+
+.twitter-color {
+    color: #55acee;
+}
+
+.google-plus-color {
+    color: #dd4b39;
+}
+
+.youtube-color {
+    color: #cd201f;
+}
+
+.instagram-color {
+    color: #e4405f;
+}
+
+/* Social Icon on hover change color*/
+.fa-facebook:hover {
+    color: #3b5999 !important;
+}
+
+.fa-twitter:hover {
+    color: #55acee !important;
+}
+
+.fa-google-plus:hover {
+    color: #dd4b39 !important;
+}
+
+.fa-youtube:hover {
+    color: #cd201f !important;
+}
+
+.fa-instagram:hover {
+    color: #e4405f !important;
+}
+
+
+.font-36 {
+    font-size: 36px;
+}
+
+.font-20 {
+    font-size: 20px;
+}
+
+.bg-facebook {
+    background-color: #3b5999;
+}
+
+.bg-twitter {
+    background-color: #55acee;
+}
+
+.bg-google-plus {
+    background-color: #dd4b39;
+}
+
+.bg-youtube {
+    background-color: #cd201f;
+}
+
+.bg-instagram {
+    background-color: #e4405f;
+}
+
+.bg-facebook-light {
+    background-color: #516CAB;
+}
+
+.bg-twitter-light {
+    background-color: #64B5F6;
+}
+
+.bg-google-plus-light {
+    background-color: #FF5252;
+}
+
+.bg-instagram-light {
+    background-color: #B92E79;
+}
+
+.bg-youtube-light {
+    background-color: #E23929;
+}
+
+.no-border-radius {
+    border-radius: 0 0 0 0 !important;
+}
+
+.social-widget-links:hover {
+    cursor: pointer;
+    text-decoration: none;
+
+}
+
+button.bg-youtube:hover {
+    color: white !important;
+}
+
+button.bg-facebook:hover {
+    color: white !important;
+}
+
+button.bg-google-plus:hover {
+    color: white !important;
+}
+
+button.bg-twitter:hover {
+    color: white !important;
+}
+
+button.bg-instagram:hover {
+    color: white !important;
+}
+
+.no-underline:hover {
+    text-decoration: none;
+}
+

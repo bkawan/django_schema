@@ -1,0 +1,31 @@
+{% extends 'django_schema/base_templates/_base_master.html' %}
+
+{% block master_content %}
+    <div class="container" style="min-height: 600px">
+    <span class="small strong text-info">
+        {% if style %}
+            Schem Style {{ style }}
+        {% else %}
+            Default Schema Style
+        {% endif %}
+    </span>
+        <ul class="list-group">
+            {% if style == 'one' %}
+                {% for app,models in local_apps.items %}
+                    <li class="list-group-item">
+                        <a href="{% url 'django_schema:models-of-local-apps-style-one' app style %}">{{ app }}</a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                {% for app,models in local_apps.items %}
+                    <li class="list-group-item">
+                        <a href="{% url 'django_schema:models-of-local-apps' app %}">{{ app }}</a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+
+
+        </ul>
+    </div>
+
+{% endblock %}

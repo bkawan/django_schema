@@ -1,0 +1,77 @@
+{% load static %}
+<header class="bg-grey-300 d-none">
+    <div class="container bg-green-50">
+        <div class="row">
+            <div class="col-md-6">
+                <a class="d-inline-block py-1" href="/">
+                    <img src="{% static 'django_schema/images/logo/company-logo.png' %}"
+                         width="84"
+                         height="84"
+                         class="d-inline-block pr-2"
+                         alt="{{ company_detail.name }}">
+                    <span class="h1 navbar-brand-name green">{{ company_detail.name }}</span>
+                </a>
+
+            </div>
+            <div class="col-md-6">
+                {{ SOCIAL_MEDIAS.facebook }}
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'django_schema:schema_index' %}">Home <span
+                            class="sr-only">(current)</span></a>
+                </li>
+{#                <li class="nav-item">#}
+{#                    <a href="" class="nav-link">#}
+{#                        Default Style#}
+{#                    </a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a href="" class="nav-link">#}
+{#                        Style One#}
+{#                    </a>#}
+{#                </li>#}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Schema Styles
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'django_schema:local-apps' %}">Default Style</a>
+                        <a class="dropdown-item" href="{% url 'django_schema:local-apps-style-one' %}">Style One</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="top-search form-inline my-2 my-lg-0" method="get"
+                  action="">
+                <div class="input-group">
+                    <input type="text"
+                           name="q"
+                           class="form-control form-control-sm no-border-radius"
+                           placeholder="Search for...">
+                    <div class="input-group-append">
+                        <button class="btn btn-success btn-sm  mr-1 no-border-radius"
+                                type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+

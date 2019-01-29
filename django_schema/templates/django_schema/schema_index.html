@@ -1,0 +1,15 @@
+{% extends 'django_schema/base_templates/_base_master.html' %}
+
+
+{% block master_content %}
+    <div class="pt-2 container" style="min-height: 600px">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a href="{% url 'django_schema:local-apps' %}">Default Style</a>
+            </li>
+            <li class="list-group-item">
+                <a href="{% url 'django_schema:local-apps-style-one' %}">Style One</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
