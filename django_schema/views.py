@@ -282,6 +282,9 @@ class ModelsOfLocalApp(TemplateView):
                 field_and_values = self.get_form_element_select_typed_choice_field_style_one(field, values)
             elif element_type == 'select' and form_field_type == 'ModelChoiceField':
                 field_and_values = self.get_form_element_select_model_choice_field_style_one(field, values)
+            elif element_type == 'select' and form_field_type == 'TreeNodeMultipleChoiceField':
+                field_and_values = self.get_form_element_select_model_tree_node_multiple_choice_field_style_one(field,
+                                                                                                                values)
 
             else:
                 field_and_values = self.get_unknown_form_element_values_style_one(field, values)
@@ -813,6 +816,59 @@ class ModelsOfLocalApp(TemplateView):
 
         return final_schema
 
+    def get_form_element_select_model_tree_node_multiple_choice_field_style_one(self, field_name, field_attrs):
+        """
+        data = {
+        "tree_categories": {
+                        "label": "Tree Categories",
+                        "formFieldType": {
+                            "type": "select",
+                            "attrs": {
+                                "visible": true,
+                                "id": "tree_categories",
+                                "disabled": false,
+                                "clearable": true,
+                                "multiple": true,
+                                "placeholder": null,
+                                "can_be_autocomplete": true,
+                                "set_id_on_form_save": true,
+                                "collapse-tags": true,
+                                "is_model_choice_field": true
+                            },
+                            "choices": "TreeNodeMultipleChoiceField"
+                        },
+                        "form_field_type_for_reference": "TreeNodeMultipleChoiceField"
+            }
+        }
+        :param field_name:
+        :param field_attrs:
+        :return:
+        """
+        field = self.get_field_values(field_attrs)
+        final_schema = {
+            field_name:{
+                "label":field.label,
+                "formFieldType":{
+                    "type":"select",
+                    "attrs":{
+                        "visible":True,
+                        "id":field.id,
+                        "disabled":False,
+                        "clearable":True,
+                        "multiple":field.html_form_element.widget.allow_multiple_selected,
+                        "placeholder":field.placeholder,
+                        "can_be_autocomplete":field.html_form_element.widget.can_be_autocomplete,
+                        "set_id_on_form_save":field.html_form_element.widget.set_id_on_form_save,
+                        "collapse-tags":True,
+                        "is_model_choice_field":True
+                    },
+                    "choices":"TreeNodeMultipleChoiceIterator",
+                }
+            },
+        }
+
+        return final_schema
+
     def get_form_element_textarea_style_one(self, field_name, field_attrs):
         """
         field_name":{
@@ -949,7 +1005,7 @@ class ModelsOfLocalApp(TemplateView):
                 data['widget']['format'] = widget.format
 
             if hasattr(widget, 'choices'):
-                if form_field_type in ['ModelMultipleChoiceField', 'ModelChoiceField']:
+                if form_field_type in ['ModelMultipleChoiceField', 'ModelChoiceField', "TreeNodeMultipleChoiceField"]:
                     data['widget']['can_be_autocomplete'] = True
                     data['widget']['set_id_on_form_save'] = True
                     data['widget']['form_field_type_for_reference'] = form_field_type
