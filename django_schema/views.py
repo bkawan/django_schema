@@ -260,6 +260,8 @@ class ModelsOfLocalApp(TemplateView):
             field_and_values = {}
             if element_type == 'input' and widget_type == 'text' and form_field_type == 'SimpleArrayField':
                 field_and_values = self.get_form_input_simple_array_field_style_one(field, values)
+            if element_type == 'input' and widget_type == 'file' and form_field_type == 'ImageField':
+                field_and_values = self.get_form_input_image_field_style_one(field, values)
             elif element_type == 'input' and widget_type == 'text':
                 field_and_values = self.get_form_input_text_style_one(field, values)
             elif element_type == 'textarea':
@@ -334,6 +336,64 @@ class ModelsOfLocalApp(TemplateView):
                     "attrs":{
                         "visible":True,
                         "type":"text",
+                        "placeholder":field.placeholder,
+                        "autofocus":True,
+                        "maxlength":field.max_length,
+                        "minlength":field.min_length,
+                        "readonly":False,
+                        "name":field.name,
+                        "clearable":False,
+                        "disabled":False,
+                        "size":"medium",
+                        "suffix-icon":"",
+                        "prefix-icon":"",
+                        "id":field.id
+                    }
+                }
+            },
+        }
+
+        return final_schema
+
+    def get_form_input_image_field_style_one(self, field_name, field_attrs):
+        '''
+       data= {
+        "thumbnail":{
+           "label":"Thumbnail",
+           "formFieldType":{
+              "type":"input",
+              "attrs":{
+                 "visible":true,
+                 "type":"text",
+                 "placeholder":null,
+                 "autofocus":true,
+                 "maxlength":100,
+                 "minlength":"",
+                 "readonly":false,
+                 "name":"thumbnail",
+                 "clearable":false,
+                 "disabled":false,
+                 "size":"medium",
+                 "suffix-icon":"",
+                 "prefix-icon":"",
+                 "id":"thumbnail"
+              }
+           },
+           "form_field_type_for_reference":"ImageField"
+            }
+        }
+        :param schema:
+        :return: data
+        '''
+        field = self.get_field_values(field_attrs)
+        final_schema = {
+            field_name:{
+                "label":field.label,
+                "formFieldType":{
+                    "type":"input",
+                    "attrs":{
+                        "visible":True,
+                        "type":"file",
                         "placeholder":field.placeholder,
                         "autofocus":True,
                         "maxlength":field.max_length,
