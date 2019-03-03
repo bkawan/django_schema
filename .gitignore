@@ -110,3 +110,5 @@ demo/
 
 
 .DS_Store
+Pipfile
+Pipfile.lock
