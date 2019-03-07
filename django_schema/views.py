@@ -294,7 +294,8 @@ class ModelsOfLocalApp(TemplateView):
                 field:[]
             })
             field_and_values[field].update({
-                'form_field_type_for_reference':form_field_type
+                'form_field_type_for_reference':form_field_type,
+                'help_text':values['help_text']
             })
             raw_schema[form_name]['FormFields'].update(field_and_values)
         raw_schema[form_name]['attrs']['rules'] = field_rules
