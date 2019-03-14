@@ -1272,3 +1272,7 @@ class LocalInstallAppsStyleOne(LocalInstallApps):
 
 class SchemaIndexView(TemplateView):
     template_name = "django_schema/schema_index.html"
+
+
+
+
