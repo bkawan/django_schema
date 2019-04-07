@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from .views import LocalInstallApps, ModelsOfLocalApp, LocalInstallAppsStyleOne, SchemaIndexView
 
@@ -11,4 +11,8 @@ urlpatterns = [
     path('local-apps/<app_name>/', ModelsOfLocalApp.as_view(), name='models-of-local-apps'),
     path('local-apps/<app_name>/style/<style>/', ModelsOfLocalApp.as_view(), name='models-of-local-apps-style-one'),
 
+]
+
+urlpatterns += [
+    path('api/', include('django_schema.api.urls'))
 ]

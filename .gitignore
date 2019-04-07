@@ -110,3 +110,7 @@ demo/
 
 
 .DS_Store
+Pipfile
+Pipfile.lock
+
+draft-readme.md

@@ -260,6 +260,8 @@ class ModelsOfLocalApp(TemplateView):
             field_and_values = {}
             if element_type == 'input' and widget_type == 'text' and form_field_type == 'SimpleArrayField':
                 field_and_values = self.get_form_input_simple_array_field_style_one(field, values)
+            if element_type == 'input' and widget_type == 'file' and form_field_type == 'ImageField':
+                field_and_values = self.get_form_input_image_field_style_one(field, values)
             elif element_type == 'input' and widget_type == 'text':
                 field_and_values = self.get_form_input_text_style_one(field, values)
             elif element_type == 'textarea':
@@ -282,14 +284,22 @@ class ModelsOfLocalApp(TemplateView):
                 field_and_values = self.get_form_element_select_typed_choice_field_style_one(field, values)
             elif element_type == 'select' and form_field_type == 'ModelChoiceField':
                 field_and_values = self.get_form_element_select_model_choice_field_style_one(field, values)
+            elif element_type == 'select' and form_field_type == 'TreeNodeMultipleChoiceField':
+                field_and_values = self.get_form_element_select_model_tree_node_multiple_choice_field_style_one(field,
+                                                                                                                values)
+            elif element_type == 'select' and form_field_type == 'TreeNodeChoiceField':
+                field_and_values = self.get_form_element_select_tree_node_choice_field_style_one(field,
+                                                                                                 values)
 
             else:
                 field_and_values = self.get_unknown_form_element_values_style_one(field, values)
             field_rules.update({
                 field:[]
             })
+
             field_and_values[field].update({
-                'form_field_type_for_reference':form_field_type
+                'form_field_type_for_reference':form_field_type,
+                'help_text':values['help_text']
             })
             raw_schema[form_name]['FormFields'].update(field_and_values)
         raw_schema[form_name]['attrs']['rules'] = field_rules
@@ -344,7 +354,67 @@ class ModelsOfLocalApp(TemplateView):
                         "prefix-icon":"",
                         "id":field.id
                     }
-                }
+                },
+                "default":field.default,
+            },
+        }
+
+        return final_schema
+
+    def get_form_input_image_field_style_one(self, field_name, field_attrs):
+        '''
+       data= {
+        "thumbnail":{
+           "label":"Thumbnail",
+           "formFieldType":{
+              "type":"input",
+              "attrs":{
+                 "visible":true,
+                 "type":"text",
+                 "placeholder":null,
+                 "autofocus":true,
+                 "maxlength":100,
+                 "minlength":"",
+                 "readonly":false,
+                 "name":"thumbnail",
+                 "clearable":false,
+                 "disabled":false,
+                 "size":"medium",
+                 "suffix-icon":"",
+                 "prefix-icon":"",
+                 "id":"thumbnail"
+              }
+           },
+           "form_field_type_for_reference":"ImageField"
+            }
+        }
+        :param schema:
+        :return: data
+        '''
+        field = self.get_field_values(field_attrs)
+        final_schema = {
+            field_name:{
+                "label":field.label,
+                "formFieldType":{
+                    "type":"input",
+                    "attrs":{
+                        "visible":True,
+                        "type":"file",
+                        "placeholder":field.placeholder,
+                        "autofocus":True,
+                        "maxlength":field.max_length,
+                        "minlength":field.min_length,
+                        "readonly":False,
+                        "name":field.name,
+                        "clearable":False,
+                        "disabled":False,
+                        "size":"medium",
+                        "suffix-icon":"",
+                        "prefix-icon":"",
+                        "id":field.id
+                    }
+                },
+                "default":field.default,
             },
         }
 
@@ -413,7 +483,8 @@ class ModelsOfLocalApp(TemplateView):
                     },
                     "baseFormField":base_field_attr
 
-                }
+                },
+                "default":field.default,
             },
         }
 
@@ -468,7 +539,8 @@ class ModelsOfLocalApp(TemplateView):
                         "prefix-icon":"",
                         "id":field.id
                     }
-                }
+                },
+                "default":field.default,
             },
         }
 
@@ -501,7 +573,8 @@ class ModelsOfLocalApp(TemplateView):
                         "prefix-icon":"",
                         "id":field.id
                     }
-                }
+                },
+                "default":field.default,
             },
         }
         return final_schema
@@ -538,7 +611,8 @@ class ModelsOfLocalApp(TemplateView):
                         "picker-options":"",
                         "id":field.id
                     }
-                }
+                },
+                "default":field.default,
             },
         }
         return final_schema
@@ -575,7 +649,8 @@ class ModelsOfLocalApp(TemplateView):
                         "picker-options":"",
                         "id":field.id
                     }
-                }
+                },
+                "default":field.default,
             },
         }
         return final_schema
@@ -610,7 +685,8 @@ class ModelsOfLocalApp(TemplateView):
                         "prefix-icon":"el-icon-date",
                         "id":field.id
                     }
-                }
+                },
+                "default":field.default,
             }
         }
         return final_schema
@@ -642,7 +718,8 @@ class ModelsOfLocalApp(TemplateView):
                         "prefix-icon":"",
                         "id":field.id
                     }
-                }
+                },
+                "default":field.default,
             },
         }
         return final_schema
@@ -686,7 +763,8 @@ class ModelsOfLocalApp(TemplateView):
                         "size":"medium",
                         "id":field.id
                     }
-                }
+                },
+                "default":field.default,
             }
         }
         return final_schema
@@ -745,7 +823,8 @@ class ModelsOfLocalApp(TemplateView):
                         "is_model_choice_field":False
                     },
                     "choices":self.get_choices(field.html_form_element.widget.choices)
-                }
+                },
+                "default":field.default,
             },
         }
 
@@ -807,7 +886,118 @@ class ModelsOfLocalApp(TemplateView):
                         "is_model_choice_field":True
                     },
                     "choices":"ModelChoiceIterator",
-                }
+                },
+                "default":field.default,
+
+            },
+        }
+
+        return final_schema
+
+    def get_form_element_select_model_tree_node_multiple_choice_field_style_one(self, field_name, field_attrs):
+        """
+        data = {
+        "tree_categories": {
+                        "label": "Tree Categories",
+                        "formFieldType": {
+                            "type": "select",
+                            "attrs": {
+                                "visible": true,
+                                "id": "tree_categories",
+                                "disabled": false,
+                                "clearable": true,
+                                "multiple": true,
+                                "placeholder": null,
+                                "can_be_autocomplete": true,
+                                "set_id_on_form_save": true,
+                                "collapse-tags": true,
+                                "is_model_choice_field": true
+                            },
+                            "choices": "TreeNodeMultipleChoiceField"
+                        },
+                        "form_field_type_for_reference": "TreeNodeMultipleChoiceField"
+            }
+        }
+        :param field_name:
+        :param field_attrs:
+        :return:
+        """
+        field = self.get_field_values(field_attrs)
+        final_schema = {
+            field_name:{
+                "label":field.label,
+                "formFieldType":{
+                    "type":"select",
+                    "attrs":{
+                        "visible":True,
+                        "id":field.id,
+                        "disabled":False,
+                        "clearable":True,
+                        "multiple":field.html_form_element.widget.allow_multiple_selected,
+                        "placeholder":field.placeholder,
+                        "can_be_autocomplete":field.html_form_element.widget.can_be_autocomplete,
+                        "set_id_on_form_save":field.html_form_element.widget.set_id_on_form_save,
+                        "collapse-tags":True,
+                        "is_model_choice_field":True
+                    },
+                    "choices":"TreeNodeMultipleChoiceIterator",
+                },
+                "default":field.default,
+            },
+        }
+
+        return final_schema
+
+    def get_form_element_select_tree_node_choice_field_style_one(self, field_name, field_attrs):
+        """
+        data = {
+        "tree_categories": {
+                        "label": "Tree Categories",
+                        "formFieldType": {
+                            "type": "select",
+                            "attrs": {
+                                "visible": true,
+                                "id": "tree_categories",
+                                "disabled": false,
+                                "clearable": true,
+                                "multiple": true,
+                                "placeholder": null,
+                                "can_be_autocomplete": true,
+                                "set_id_on_form_save": true,
+                                "collapse-tags": true,
+                                "is_model_choice_field": true
+                            },
+                            "choices": "TreeNodeMultipleChoiceField"
+                        },
+                        "form_field_type_for_reference": "TreeNodeMultipleChoiceField"
+            }
+        }
+        :param field_name:
+        :param field_attrs:
+        :return:
+        """
+        field = self.get_field_values(field_attrs)
+        final_schema = {
+            field_name:{
+                "label":field.label,
+                "formFieldType":{
+                    "type":"select",
+                    "attrs":{
+                        "visible":True,
+                        "id":field.id,
+                        "disabled":False,
+                        "clearable":True,
+                        "multiple":field.html_form_element.widget.allow_multiple_selected,
+                        "placeholder":field.placeholder,
+                        "can_be_autocomplete":field.html_form_element.widget.can_be_autocomplete,
+                        "set_id_on_form_save":field.html_form_element.widget.set_id_on_form_save,
+                        "collapse-tags":True,
+                        "is_model_choice_field":True
+                    },
+                    "choices":"ModelChoiceIterator",
+                },
+                "default":field.default,
+
             },
         }
 
@@ -866,7 +1056,8 @@ class ModelsOfLocalApp(TemplateView):
                             "maxRows":field.html_form_element.widget.attrs.rows
                         }
                     }
-                }
+                },
+                "default":field.default,
             }
         }
 
@@ -880,6 +1071,7 @@ class ModelsOfLocalApp(TemplateView):
             'label':label,
             'is_required':values.get('required'),
             'placeholder':values.get('default', f'Please provide {label}'),
+            'default':values.get('default'),
             'max_length':values.get('max_length', 0),
             'min_length':values.get('min_length', 0),
             'id':key,
@@ -949,7 +1141,10 @@ class ModelsOfLocalApp(TemplateView):
                 data['widget']['format'] = widget.format
 
             if hasattr(widget, 'choices'):
-                if form_field_type in ['ModelMultipleChoiceField', 'ModelChoiceField']:
+                if form_field_type in ['ModelMultipleChoiceField',
+                                       'ModelChoiceField',
+                                       "TreeNodeMultipleChoiceField",
+                                       "TreeNodeChoiceField"]:
                     data['widget']['can_be_autocomplete'] = True
                     data['widget']['set_id_on_form_save'] = True
                     data['widget']['form_field_type_for_reference'] = form_field_type
@@ -1077,3 +1272,7 @@ class LocalInstallAppsStyleOne(LocalInstallApps):
 
 class SchemaIndexView(TemplateView):
     template_name = "django_schema/schema_index.html"
+
+
+
+
